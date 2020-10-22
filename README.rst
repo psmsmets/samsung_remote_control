@@ -36,7 +36,7 @@ to show this help message and exit
 
     optional arguments:
       -h, --help     show this help message and exit
-      --locale ..    Control command name. Allowed values are: en, nl, fr
+      --locale ..    Set locale (default: en). Allowed values are: en, nl, fr
       -v, --version  Print the version number and exit
 
 Control remote TV's

@@ -20,7 +20,8 @@ def main():
     locales = ('en', 'nl', 'fr')
     parser.add_argument(
         '--locale', metavar='..', choices=locales, default='en',
-        help=('Control command name. Allowed values are: '+', '.join(locales))
+        help=('Set locale (default: en). Allowed values are: '
+              ', '.join(locales))
     )
 
     parser.add_argument(
