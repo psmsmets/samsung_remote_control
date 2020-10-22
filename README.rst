@@ -53,7 +53,7 @@ Create a ``.bat`` to launch the remote control gui making use of ``powershell``,
 `Miniconda3`_ and the `samsung_mdc`_ Python3 package
 
 .. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
-.. _samsung mdc: https://github.com/psmsmets/samsung_mdc
+.. _samsung_mdc: https://github.com/psmsmets/samsung_mdc
 
 .. code-block::
  
