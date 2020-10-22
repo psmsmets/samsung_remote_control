@@ -16,7 +16,7 @@ Samsung remote control using the Multiple Display Control Protocol via TCP/IP
     (https://www.gnu.org/licenses/gpl-3.0.en.html)
 """
 
-from .gui import remote_control
+from .remote_control import remote_control
 
 # Make only a selection available to __all__ to not clutter the namespace
 # Maybe also to discourage the use of `from samsung_mdc import *`.
