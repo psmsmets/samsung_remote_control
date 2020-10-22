@@ -8,6 +8,10 @@ Features
 ========
 
 Provides a simple gui to control all TV's at once.
+
+.. image:: example.png
+  :width: 300
+  :alt: Example remote in Dutch
  
 Usage
 =====
@@ -45,9 +49,12 @@ Control remote TV's
 Windows executable
 ==================
 
-Create a ``.bat`` file using ``powershell`` and ``Miniconda3``
+Create a ``.bat`` to launch the remote control gui making use of ``powershell``
+and ``Miniconda3``:
 
 .. code-block:: ruby
+
+    :: samsung_remote_control.bat
 
     @echo off
 
@@ -59,8 +66,10 @@ Create a ``.bat`` file using ``powershell`` and ``Miniconda3``
         192.168.2.211 192.168.2.212
 
     call %root%\Scripts\activate.bat
-    powershell -window hidden "python samsung_remote_control --locale=nl %hosts%"
 
+    powershell -window hidden "python samsung_remote_control %hosts% --locale=nl"
+
+A custom icon can be set by creating a short-cut to this ``.bat`` file.
 
 License information
 ===================
