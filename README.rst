@@ -49,9 +49,10 @@ Control remote TV's
 Windows executable
 ==================
 
-Create a ``.bat`` to launch the remote control gui making use of ``powershell``, 
+Create a ``.bat`` to launch the remote control gui making use of `PowerShell`_, 
 `Miniconda3`_ and the `samsung_mdc`_ Python3 package
 
+.. _PowerShell: https://docs.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7
 .. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
 .. _samsung_mdc: https://github.com/psmsmets/samsung_mdc
 
