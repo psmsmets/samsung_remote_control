@@ -1,6 +1,13 @@
 import PySimpleGUI as sg
 from samsung_mdc import MultipleDisplayControl
-from samsung_remote_control import __version__
+try:
+    from .version import version as __version__
+except ImportError:
+    from datetime import datetime
+    __version__ = 'unknown-'+datetime.today().strftime('%Y%m%d')
+
+
+__all__ = ['remote_control']
 
 
 def control_all_screens(command, value):
@@ -107,7 +114,7 @@ def remote_control(addresses: list, locale: str = None):
     layout = [[sg.Frame(_title_power.capitalize(), power, **frame)],
               [sg.Frame(_title_settings.capitalize(), settings, **frame)],
               [sg.Frame(_title_lock.capitalize(), lock, **frame)],
-              [sg.T(f'Samsung remote control - v{__version__} - STEPS4it.be',
+              [sg.T(f'v{__version__} - STEPS4it.be',
                     justification='right', font='Any 9')]]
 
     window = sg.Window('Samsung remote control', layout,
