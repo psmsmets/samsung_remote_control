@@ -2,7 +2,7 @@
 samsung_remote_control
 **********************
 
-Samsung remote control using the Multiple Display Control Protocol via TCP/IP
+Samsung remote control using the `Multiple Display Control <https://github.com/psmsmets/samsung_mdc>`_ protocol via TCP/IP
 
 Features
 ========
@@ -29,7 +29,7 @@ to show this help message and exit
     usage: samsung_remote_control [-h] [--locale ..] [-v]
                                   host[:port] [host[:port] ...]
 
-    Samsung remote control using the Multiple Display Control Protocol via TCP/IP
+    Samsung remote control using the Multiple Display Control protocol via TCP/IP
 
     positional arguments:
       host[:port]    Remote TV ipv4 addresses (default port: 1515)
