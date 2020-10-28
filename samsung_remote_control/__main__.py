@@ -49,7 +49,7 @@ def main():
         args.hosts,
         locale=args.locale,
         source=args.source,
-        timeout=args.timeout if args.timeout >= 0. else None,
+        timeout=None if args.timeout < 0. else args.timeout,
     )
 
 
