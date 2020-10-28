@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 from samsung_mdc import MultipleDisplayControl
+from samsung_mdc.mdc import _input_sources_set
 try:
     from .version import version as __version__
 except ImportError:
@@ -10,7 +11,7 @@ except ImportError:
 __all__ = ['remote_control']
 
 
-def control_all_screens(command, value):
+def control_all_screens(command, value, **kwargs):
     """
     """
     print('-'*len(command))
@@ -18,11 +19,12 @@ def control_all_screens(command, value):
     print('-'*len(command))
     for (host, port) in _screen_addresses:
         try:
-            with MultipleDisplayControl(host, port) as screen:
+            with MultipleDisplayControl(host, port, **kwargs) as screen:
                 print(f'{screen} set {command} to "{value}"')
                 eval(f'screen.set_{command}(value)')
         except Exception as e:
             print('Error:', e)
+        screen = None
 
 
 def set_locale(lang: str):
@@ -78,18 +80,41 @@ def set_addresses(addresses: list):
         _screen_addresses.append((host, port))
 
 
-def remote_control(addresses: list, locale: str = None):
+def remote_control(addresses: list, source: str = None, locale: str = None,
+                   **kwargs):
     """Samsung remote control gui using the Multiple Display Control Protocol
     via TCP/IP
 
     Parameters:
     -----------
+    addresses : `list`
+        List with ipv4-addresses
+
+    source : `str`, optional
+        Set input source (default: 'HDMI2').
+
+    locale : {'en', 'fr', 'nl'}, optional
+        Set gui languange (default: 'en').
+
+    **kwargs :
+        Any additional argument is passed to
+        `samsung_mdc.MultipleDisplayControl()`
     """
     # set screen addresses
     set_addresses(addresses)
 
     # set language
     set_locale(locale)
+
+    # set source
+    print(source)
+    source = source or 'HDMI2'
+    if not isinstance(source, str):
+        raise TypeError('source should be a string')
+    source = source.upper()
+    if source not in _input_sources_set.values():
+        raise ValueError(f'source "{source}" is invalid. Input sources are: '
+                         ', '.join(_input_sources_set.values()))
 
     # construct window
     sg.theme('Black')
@@ -101,8 +126,8 @@ def remote_control(addresses: list, locale: str = None):
     power = [[sg.Button(_text_on.upper(), key='power_on', **btn_lg)],
              [sg.Button(_text_off.upper(), key='power_off', **btn_lg)]]
 
-    settings = [[sg.Button(f'{_text_source}\nHDMI2',
-                           key='source_hdmi2', **btn_sm),
+    settings = [[sg.Button(f'{_text_source}\n{source}',
+                           key='set_source', **btn_sm),
                  sg.Button(f'{_text_mute}\n{_text_on}',
                            key='mute_on', **btn_sm)]]
 
@@ -126,16 +151,16 @@ def remote_control(addresses: list, locale: str = None):
         if key == sg.WIN_CLOSED or key == 'Cancel':
             break
         elif key == 'power_on':
-            control_all_screens('power', True)
+            control_all_screens('power', True, **kwargs)
         elif key == 'power_off':
-            control_all_screens('power', False)
-        elif key == 'source_hdmi2':
-            control_all_screens('source', 'HDMI2')
+            control_all_screens('power', False, **kwargs)
+        elif key == 'set_source':
+            control_all_screens('source', source, **kwargs)
         elif key == 'mute_on':
-            control_all_screens('mute', True)
+            control_all_screens('mute', True, **kwargs)
         elif key == 'lock_on':
-            control_all_screens('safety_lock', True)
+            control_all_screens('safety_lock', True, **kwargs)
         elif key == 'lock_off':
-            control_all_screens('safety_lock', False)
+            control_all_screens('safety_lock', False, **kwargs)
 
     window.close()

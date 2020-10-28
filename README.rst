@@ -22,14 +22,16 @@ In the terminal execute
 
     >>> samsung_remote_control --help
 
+
 to show this help message and exit
 
 .. code-block:: console
 
-    usage: samsung_remote_control [-h] [--locale ..] [-v]
+    usage: samsung_remote_control [-h] [--locale ..] [--source ..] [--timeout ..]
+                                  [-v]
                                   host[:port] [host[:port] ...]
 
-    Samsung remote control using the Multiple Display Control protocol via TCP/IP
+    Samsung remote control using the Multiple Display Control Protocol via TCP/IP
 
     positional arguments:
       host[:port]    Remote TV ipv4 addresses (default port: 1515)
@@ -37,7 +39,13 @@ to show this help message and exit
     optional arguments:
       -h, --help     show this help message and exit
       --locale ..    Set locale (default: en). Allowed values are: en, nl, fr
+      --source ..    Set source (default: HDMI2). Allowed values are: Input
+                     source, DVI, MagicInfo, HDMI1, HDMI2, DisplayPort
+      --timeout ..   Set a timeout on blocking socket operations, in seconds
+                     (default: 5.0). Timeout > 0: raise timeout exception. Timeout
+                     == 0: non-blocking mode. Timeout < 0: blocking mode.
       -v, --version  Print the version number and exit
+
 
 Control remote TV's
 
@@ -72,6 +80,7 @@ Create a ``.bat`` to launch the remote control gui making use of `PowerShell`_,
     call %root%\Scripts\activate.bat
 
     powershell -window hidden -command "python samsung_remote_control %hosts% --locale=nl"
+
 
 A custom icon can be set by creating a short-cut to this ``.bat`` file.
 
