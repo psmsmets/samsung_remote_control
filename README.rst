@@ -79,7 +79,7 @@ Create a ``.bat`` to launch the remote control gui making use of `PowerShell`_,
 
     call %root%\Scripts\activate.bat
 
-    powershell -window hidden -command "python samsung_remote_control %hosts% --locale=nl"
+    powershell -window hidden -command "samsung_remote_control %hosts% --locale=nl"
 
 
 A custom icon can be set by creating a short-cut to this ``.bat`` file.
