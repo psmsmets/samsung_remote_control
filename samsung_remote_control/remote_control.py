@@ -11,20 +11,35 @@ except ImportError:
 __all__ = ['remote_control']
 
 
-def control_all_screens(command, value, **kwargs):
+def control_all_screens(command, value, retry_attempts: int = None,
+                        verb: bool = True, **kwargs):
     """
     """
-    print('-'*len(command))
-    print(command)
-    print('-'*len(command))
+    retry_attempts = int(retry_attempts or 3)
+    retry_attempts = 1 if retry_attempts < 1 else retry_attempts
+
+    if verb:
+        print('-'*len(command))
+        print(command)
+        print('-'*len(command))
+
     for (host, port) in _screen_addresses:
-        try:
-            with MultipleDisplayControl(host, port, **kwargs) as screen:
-                print(f'{screen} set {command} to "{value}"')
-                eval(f'screen.set_{command}(value)')
-        except Exception as e:
-            print('Error:', e)
-        screen = None
+        print(f'{host}:{port}')
+        for attempt in range(0, retry_attempts):
+            print(f'.. attempt {attempt+1}')
+            try:
+                with MultipleDisplayControl(host, port, **kwargs) as screen:
+                    if verb:
+                        print(f'.. {screen} set {command} to "{value}"')
+                    eval(f'screen.set_{command}(value)')
+            except Exception as e:
+                if verb:
+                    print('.. error:', e)
+            else:
+                break
+
+    if verb:
+        print('')
 
 
 def set_locale(lang: str):
@@ -81,7 +96,7 @@ def set_addresses(addresses: list):
 
 
 def remote_control(addresses: list, source: str = None, locale: str = None,
-                   **kwargs):
+                   verb: bool = True, **kwargs):
     """Samsung remote control gui using the Multiple Display Control Protocol
     via TCP/IP
 
@@ -100,6 +115,21 @@ def remote_control(addresses: list, source: str = None, locale: str = None,
         Any additional argument is passed to
         `samsung_mdc.MultipleDisplayControl()`
     """
+
+    if verb:
+        print('------')
+        print('config')
+        print('------')
+        print('hosts addresses :', addresses)
+        print('         locale :', locale)
+        print('         source :', source)
+        print('        timeout :',
+              kwargs['timeout'] if 'timeout' in kwargs else None)
+        print(' retry attempts :',
+              kwargs['retry_attempts'] if 'retry_attempts' in kwargs
+              else None)
+    kwargs['verb'] = verb
+
     # set screen addresses
     set_addresses(addresses)
 
@@ -107,7 +137,6 @@ def remote_control(addresses: list, source: str = None, locale: str = None,
     set_locale(locale)
 
     # set source
-    print(source)
     source = source or 'HDMI2'
     if not isinstance(source, str):
         raise TypeError('source should be a string')
